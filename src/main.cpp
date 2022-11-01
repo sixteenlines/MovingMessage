@@ -5,14 +5,14 @@
 #include <string.h>
 
 /* Network */
-const char* ssid = "MOVING-MESSAGE";
-const char* pw = "12200000";
+const char *ssid = "MOVING-MESSAGE";
+const char *pw = "12200000";
 AsyncWebServer server(80);
 
 /* http query parameters*/
-const char* PARAM_INPUT_PWR = "power";
-const char* PARAM_INPUT_MODE = "direction";
-const char* PARAM_INPUT_STRING = "string";
+const char *PARAM_INPUT_PWR = "power";
+const char *PARAM_INPUT_MODE = "direction";
+const char *PARAM_INPUT_STRING = "string";
 
 /* Message control */
 bool power = true;
@@ -40,7 +40,7 @@ bool dash[7][4] = {
     {1, 1, 1, 1},
     {0, 0, 0, 0},
     {0, 0, 0, 0},
-    {0, 0, 0, 0} };
+    {0, 0, 0, 0}};
 bool one[7][3] = {
     {0, 0, 1},
     {0, 1, 1},
@@ -48,7 +48,7 @@ bool one[7][3] = {
     {0, 0, 1},
     {0, 0, 1},
     {0, 0, 1},
-    {0, 0, 1} };
+    {0, 0, 1}};
 bool two[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -56,7 +56,7 @@ bool two[7][5] = {
     {0, 0, 1, 0, 0},
     {0, 1, 0, 0, 0},
     {1, 0, 0, 0, 0},
-    {1, 1, 1, 1, 1} };
+    {1, 1, 1, 1, 1}};
 bool three[7][5] = {
     {1, 1, 1, 1, 0},
     {0, 0, 0, 0, 1},
@@ -64,7 +64,7 @@ bool three[7][5] = {
     {0, 1, 1, 1, 0},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0} };
+    {1, 1, 1, 1, 0}};
 bool four[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -72,7 +72,7 @@ bool four[7][5] = {
     {0, 1, 1, 1, 1},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {0, 0, 0, 0, 1} };
+    {0, 0, 0, 0, 1}};
 bool five[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0},
@@ -80,7 +80,7 @@ bool five[7][5] = {
     {0, 1, 1, 1, 0},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0} };
+    {1, 1, 1, 1, 0}};
 bool six[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -88,7 +88,7 @@ bool six[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {0, 1, 1, 1, 0} };
+    {0, 1, 1, 1, 0}};
 bool seven[7][5] = {
     {1, 1, 1, 1, 1},
     {0, 0, 0, 0, 1},
@@ -96,7 +96,7 @@ bool seven[7][5] = {
     {0, 1, 1, 1, 0},
     {0, 1, 0, 0, 0},
     {1, 0, 0, 0, 0},
-    {1, 0, 0, 0, 0} };
+    {1, 0, 0, 0, 0}};
 bool eight[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -104,7 +104,7 @@ bool eight[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {0, 1, 1, 1, 0} };
+    {0, 1, 1, 1, 0}};
 bool nine[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -112,7 +112,7 @@ bool nine[7][5] = {
     {0, 1, 1, 1, 1},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0} };
+    {1, 1, 1, 1, 0}};
 bool zero[7][4] = {
     {1, 1, 1, 1},
     {1, 0, 0, 1},
@@ -120,7 +120,7 @@ bool zero[7][4] = {
     {1, 0, 0, 1},
     {1, 0, 0, 1},
     {1, 0, 0, 1},
-    {1, 1, 1, 1} };
+    {1, 1, 1, 1}};
 bool a[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
@@ -128,7 +128,7 @@ bool a[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool b[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -136,8 +136,7 @@ bool b[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0},
-};
+    {1, 1, 1, 1, 0}};
 bool c[7][4] = {
     {0, 1, 1, 1},
     {1, 0, 0, 0},
@@ -145,7 +144,7 @@ bool c[7][4] = {
     {1, 0, 0, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {0, 1, 1, 1} };
+    {0, 1, 1, 1}};
 bool d[7][5] = {
     {1, 1, 1, 0, 0},
     {1, 0, 0, 1, 0},
@@ -153,7 +152,7 @@ bool d[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 1, 0},
-    {1, 1, 1, 0, 0} };
+    {1, 1, 1, 0, 0}};
 bool e[7][4] = {
     {1, 1, 1, 1},
     {1, 0, 0, 0},
@@ -161,7 +160,7 @@ bool e[7][4] = {
     {1, 1, 1, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {1, 1, 1, 1} };
+    {1, 1, 1, 1}};
 bool f[7][4] = {
     {1, 1, 1, 1},
     {1, 0, 0, 0},
@@ -169,7 +168,7 @@ bool f[7][4] = {
     {1, 1, 1, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {1, 0, 0, 0} };
+    {1, 0, 0, 0}};
 bool g[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0},
@@ -177,7 +176,7 @@ bool g[7][5] = {
     {1, 0, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1} };
+    {1, 1, 1, 1, 1}};
 bool h[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -185,7 +184,7 @@ bool h[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool i[7][3] = {
     {1, 1, 1},
     {0, 1, 0},
@@ -193,7 +192,7 @@ bool i[7][3] = {
     {0, 1, 0},
     {0, 1, 0},
     {0, 1, 0},
-    {1, 1, 1} };
+    {1, 1, 1}};
 bool j[7][4] = {
     {0, 0, 0, 1},
     {0, 0, 0, 1},
@@ -201,7 +200,7 @@ bool j[7][4] = {
     {0, 0, 0, 1},
     {0, 0, 0, 1},
     {1, 0, 0, 1},
-    {0, 1, 1, 0} };
+    {0, 1, 1, 0}};
 bool k[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 1, 0},
@@ -209,7 +208,7 @@ bool k[7][5] = {
     {1, 1, 0, 0, 0},
     {1, 0, 1, 0, 0},
     {1, 0, 0, 1, 0},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool l[7][4] = {
     {1, 0, 0, 0},
     {1, 0, 0, 0},
@@ -217,7 +216,7 @@ bool l[7][4] = {
     {1, 0, 0, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {1, 1, 1, 1} };
+    {1, 1, 1, 1}};
 bool m[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 1, 0, 1, 1},
@@ -225,7 +224,7 @@ bool m[7][5] = {
     {1, 0, 1, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool n[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 1, 0, 0, 1},
@@ -233,8 +232,7 @@ bool n[7][5] = {
     {1, 0, 1, 0, 1},
     {1, 0, 0, 1, 1},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1},
-};
+    {1, 0, 0, 0, 1}};
 bool o[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -242,8 +240,7 @@ bool o[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {0, 1, 1, 1, 0},
-};
+    {0, 1, 1, 1, 0}};
 bool p[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -251,8 +248,7 @@ bool p[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 0},
     {1, 0, 0, 0, 0},
-    {1, 0, 0, 0, 0},
-};
+    {1, 0, 0, 0, 0}};
 bool q[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -260,8 +256,7 @@ bool q[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 1, 0, 1},
     {1, 0, 0, 1, 1},
-    {0, 1, 1, 1, 1},
-};
+    {0, 1, 1, 1, 1}};
 bool r[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -269,8 +264,7 @@ bool r[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 1, 0, 0},
     {1, 0, 0, 1, 0},
-    {1, 0, 0, 0, 1},
-};
+    {1, 0, 0, 0, 1}};
 bool s[7][5] = {
     {0, 1, 1, 1, 1},
     {1, 0, 0, 0, 0},
@@ -278,8 +272,7 @@ bool s[7][5] = {
     {0, 1, 1, 1, 0},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0},
-};
+    {1, 1, 1, 1, 0}};
 bool t[7][5] = {
     {1, 1, 1, 1, 1},
     {0, 0, 1, 0, 0},
@@ -287,8 +280,7 @@ bool t[7][5] = {
     {0, 0, 1, 0, 0},
     {0, 0, 1, 0, 0},
     {0, 0, 1, 0, 0},
-    {0, 0, 1, 0, 0},
-};
+    {0, 0, 1, 0, 0}};
 bool u[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -296,8 +288,7 @@ bool u[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {0, 1, 1, 1, 0},
-};
+    {0, 1, 1, 1, 0}};
 bool v[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -305,8 +296,7 @@ bool v[7][5] = {
     {1, 0, 0, 0, 1},
     {0, 1, 0, 1, 0},
     {0, 1, 0, 1, 0},
-    {0, 0, 1, 0, 0},
-};
+    {0, 0, 1, 0, 0}};
 bool w[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -314,8 +304,7 @@ bool w[7][5] = {
     {1, 0, 1, 0, 1},
     {1, 0, 1, 0, 1},
     {1, 1, 0, 1, 1},
-    {1, 0, 0, 0, 1},
-};
+    {1, 0, 0, 0, 1}};
 bool x[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -323,8 +312,7 @@ bool x[7][5] = {
     {0, 0, 1, 0, 0},
     {0, 1, 0, 1, 0},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1},
-};
+    {1, 0, 0, 0, 1}};
 bool y[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -332,8 +320,7 @@ bool y[7][5] = {
     {0, 0, 1, 0, 0},
     {0, 0, 1, 0, 0},
     {0, 0, 1, 0, 0},
-    {0, 0, 1, 0, 0},
-};
+    {0, 0, 1, 0, 0}};
 bool z[7][5] = {
     {1, 1, 1, 1, 1},
     {0, 0, 0, 0, 1},
@@ -341,8 +328,7 @@ bool z[7][5] = {
     {0, 0, 1, 0, 0},
     {0, 1, 0, 0, 0},
     {1, 0, 0, 0, 0},
-    {1, 1, 1, 1, 1},
-};
+    {1, 1, 1, 1, 1}};
 
 /* webpage with button template and input field */
 const char index_html[] PROGMEM = R"rawliteral(
@@ -383,10 +369,8 @@ const char index_html[] PROGMEM = R"rawliteral(
         }
         function updateDisplay(str) {
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                xhr.open("GET", "/update?string="+str, true);
-                xhr.send();
-            }
+            xhr.open("GET", "/update?string="+str, true);
+            xhr.send();
         }
 </script>
 </body>
@@ -417,7 +401,7 @@ String direction()
     }
 }
 
-String processor(const String& var)
+String processor(const String &var)
 {
     if (var == "BUTTONS")
     {
@@ -554,7 +538,7 @@ void write_letter(char letter)
         }
         break;
     case 'C':
-        for (int posHoriz = 0; posHoriz < 5; posHoriz++)
+        for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
             for (int posVert = 0; posVert < 7; posVert++)
             {
@@ -572,7 +556,7 @@ void write_letter(char letter)
         }
         break;
     case 'E':
-        for (int posHoriz = 0; posHoriz < 5; posHoriz++)
+        for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
             for (int posVert = 0; posVert < 7; posVert++)
             {
@@ -581,7 +565,7 @@ void write_letter(char letter)
         }
         break;
     case 'F':
-        for (int posHoriz = 0; posHoriz < 5; posHoriz++)
+        for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
             for (int posVert = 0; posVert < 7; posVert++)
             {
@@ -791,7 +775,7 @@ void update_text(String inputString)
     offset = 0;
     clear_canvas();
     char outputString[16];
-    char* pString = outputString;
+    char *pString = outputString;
     inputString.toCharArray(outputString, 16);
     while (*pString)
     {
@@ -819,17 +803,18 @@ void setup()
     Serial.println(WiFi.softAPIP());
 
     /* main page */
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest* request)
-        { request->send_P(200, "text/html", index_html, processor); });
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send_P(200, "text/html", index_html, processor); });
 
     /* text update */
-    server.on("/update", HTTP_GET, [](AsyncWebServerRequest* request)
-        {
+    server.on("/update", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
             String inputString;
             if (request->hasParam(PARAM_INPUT_STRING))
             {
                 inputString = request->getParam(PARAM_INPUT_STRING)->value();
                 update_text(inputString);
+                Serial.println(inputString);
             }
             else
             {
@@ -839,8 +824,8 @@ void setup()
             request->send_P(200, "text/plain", "OK"); });
 
     /* On - Off */
-    server.on("/run", HTTP_GET, [](AsyncWebServerRequest* request)
-        {
+    server.on("/run", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
             String inputPower;
             if (request->hasParam(PARAM_INPUT_PWR))
             {
@@ -860,8 +845,8 @@ void setup()
             }
             request->send(200, "text/plain", "OK"); });
     /* Left - Right */
-    server.on("/mode", HTTP_GET, [](AsyncWebServerRequest* request)
-        {
+    server.on("/mode", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
             String inputMode;
             if (request->hasParam(PARAM_INPUT_MODE))
             {
