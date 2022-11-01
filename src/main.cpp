@@ -367,21 +367,26 @@ const char index_html[] PROGMEM = R"rawliteral(
   <h1>Moving Message</h1>
   %BUTTONS%
   <div><h3>String Ausgabe</h3></div>
-  <form action="/update">
-    Ausgabe: <input type="text" name="string" maxlength="15" oninput="this.value = this.value.toUpperCase()">
-    <input type="submit" value="Submit">
-  </form><br> 
+  <input type="text" id="2" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20">
+ <br> 
 <script>function togglePower(element) {
-        var xhrpower = new XMLHttpRequest();
-        if(element.checked){ xhrpower.open("GET", "/run?power=on", true); }
-        else { xhrpower.open("GET", "/run?power=off", true); }
-        xhrpower.send();
+            var xhr = new XMLHttpRequest();
+            if(element.checked){ xhr.open("GET", "/run?power=on", true); }
+            else { xhr.open("GET", "/run?power=off", true); }
+            xhr.send();
         }
         function toggleMode(element) {
-        var xhrmode = new XMLHttpRequest();
-        if(element.checked){ xhrmode.open("GET", "/mode?direction=left", true); }
-        else { xhrmode.open("GET", "/mode?direction=right", true); }
-        xhrmode.send();
+            var xhr = new XMLHttpRequest();
+            if(element.checked){ xhr.open("GET", "/mode?direction=left", true); }
+            else { xhr.open("GET", "/mode?direction=right", true); }
+            xhr.send();
+        }
+        function updateDisplay(str) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                xhr.open("GET", "/update?string="+str, true);
+                xhr.send();
+            }
         }
 </script>
 </body>
@@ -831,7 +836,7 @@ void setup()
                 inputString = "404";
                 Serial.println("Fehler");
             }
-            request->send_P(200, "text/html", index_html, processor); });
+            request->send_P(200, "text/plain", "OK"); });
 
     /* On - Off */
     server.on("/run", HTTP_GET, [](AsyncWebServerRequest* request)
