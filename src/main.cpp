@@ -5,14 +5,14 @@
 #include <string.h>
 
 /* Network */
-const char* ssid = "MOVING-MESSAGE";
-const char* pw = "12200000";
+const char *ssid = "MOVING-MESSAGE";
+const char *pw = "12200000";
 AsyncWebServer server(80);
 
 /* http query parameters*/
-const char* PARAM_INPUT_PWR = "power";
-const char* PARAM_INPUT_MODE = "direction";
-const char* PARAM_INPUT_STRING = "string";
+const char *PARAM_INPUT_PWR = "power";
+const char *PARAM_INPUT_MODE = "direction";
+const char *PARAM_INPUT_STRING = "string";
 
 /* Message control */
 bool power = true;
@@ -40,7 +40,7 @@ bool dash[7][4] = {
     {1, 1, 1, 1},
     {0, 0, 0, 0},
     {0, 0, 0, 0},
-    {0, 0, 0, 0} };
+    {0, 0, 0, 0}};
 bool one[7][3] = {
     {0, 0, 1},
     {0, 1, 1},
@@ -48,7 +48,7 @@ bool one[7][3] = {
     {0, 0, 1},
     {0, 0, 1},
     {0, 0, 1},
-    {0, 0, 1} };
+    {0, 0, 1}};
 bool two[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -56,7 +56,7 @@ bool two[7][5] = {
     {0, 0, 1, 0, 0},
     {0, 1, 0, 0, 0},
     {1, 0, 0, 0, 0},
-    {1, 1, 1, 1, 1} };
+    {1, 1, 1, 1, 1}};
 bool three[7][5] = {
     {1, 1, 1, 1, 0},
     {0, 0, 0, 0, 1},
@@ -64,7 +64,7 @@ bool three[7][5] = {
     {0, 1, 1, 1, 0},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0} };
+    {1, 1, 1, 1, 0}};
 bool four[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -72,7 +72,7 @@ bool four[7][5] = {
     {0, 1, 1, 1, 1},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {0, 0, 0, 0, 1} };
+    {0, 0, 0, 0, 1}};
 bool five[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0},
@@ -80,7 +80,7 @@ bool five[7][5] = {
     {0, 1, 1, 1, 0},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0} };
+    {1, 1, 1, 1, 0}};
 bool six[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -88,7 +88,7 @@ bool six[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {0, 1, 1, 1, 0} };
+    {0, 1, 1, 1, 0}};
 bool seven[7][5] = {
     {1, 1, 1, 1, 1},
     {0, 0, 0, 0, 1},
@@ -96,7 +96,7 @@ bool seven[7][5] = {
     {0, 1, 1, 1, 0},
     {0, 1, 0, 0, 0},
     {1, 0, 0, 0, 0},
-    {1, 0, 0, 0, 0} };
+    {1, 0, 0, 0, 0}};
 bool eight[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -104,7 +104,7 @@ bool eight[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {0, 1, 1, 1, 0} };
+    {0, 1, 1, 1, 0}};
 bool nine[7][5] = {
     {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -112,7 +112,7 @@ bool nine[7][5] = {
     {0, 1, 1, 1, 1},
     {0, 0, 0, 0, 1},
     {0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 0} };
+    {1, 1, 1, 1, 0}};
 bool zero[7][4] = {
     {1, 1, 1, 1},
     {1, 0, 0, 1},
@@ -120,7 +120,7 @@ bool zero[7][4] = {
     {1, 0, 0, 1},
     {1, 0, 0, 1},
     {1, 0, 0, 1},
-    {1, 1, 1, 1} };
+    {1, 1, 1, 1}};
 bool a[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
@@ -128,7 +128,7 @@ bool a[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool b[7][5] = {
     {1, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
@@ -145,7 +145,7 @@ bool c[7][4] = {
     {1, 0, 0, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {0, 1, 1, 1} };
+    {0, 1, 1, 1}};
 bool d[7][5] = {
     {1, 1, 1, 0, 0},
     {1, 0, 0, 1, 0},
@@ -153,7 +153,7 @@ bool d[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 1, 0},
-    {1, 1, 1, 0, 0} };
+    {1, 1, 1, 0, 0}};
 bool e[7][4] = {
     {1, 1, 1, 1},
     {1, 0, 0, 0},
@@ -161,7 +161,7 @@ bool e[7][4] = {
     {1, 1, 1, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {1, 1, 1, 1} };
+    {1, 1, 1, 1}};
 bool f[7][4] = {
     {1, 1, 1, 1},
     {1, 0, 0, 0},
@@ -169,7 +169,7 @@ bool f[7][4] = {
     {1, 1, 1, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {1, 0, 0, 0} };
+    {1, 0, 0, 0}};
 bool g[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0},
@@ -177,7 +177,7 @@ bool g[7][5] = {
     {1, 0, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1} };
+    {1, 1, 1, 1, 1}};
 bool h[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
@@ -185,7 +185,7 @@ bool h[7][5] = {
     {1, 1, 1, 1, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool i[7][3] = {
     {1, 1, 1},
     {0, 1, 0},
@@ -193,7 +193,7 @@ bool i[7][3] = {
     {0, 1, 0},
     {0, 1, 0},
     {0, 1, 0},
-    {1, 1, 1} };
+    {1, 1, 1}};
 bool j[7][4] = {
     {0, 0, 0, 1},
     {0, 0, 0, 1},
@@ -201,7 +201,7 @@ bool j[7][4] = {
     {0, 0, 0, 1},
     {0, 0, 0, 1},
     {1, 0, 0, 1},
-    {0, 1, 1, 0} };
+    {0, 1, 1, 0}};
 bool k[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 0, 0, 1, 0},
@@ -209,7 +209,7 @@ bool k[7][5] = {
     {1, 1, 0, 0, 0},
     {1, 0, 1, 0, 0},
     {1, 0, 0, 1, 0},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool l[7][4] = {
     {1, 0, 0, 0},
     {1, 0, 0, 0},
@@ -217,7 +217,7 @@ bool l[7][4] = {
     {1, 0, 0, 0},
     {1, 0, 0, 0},
     {1, 0, 0, 0},
-    {1, 1, 1, 1} };
+    {1, 1, 1, 1}};
 bool m[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 1, 0, 1, 1},
@@ -225,7 +225,7 @@ bool m[7][5] = {
     {1, 0, 1, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
-    {1, 0, 0, 0, 1} };
+    {1, 0, 0, 0, 1}};
 bool n[7][5] = {
     {1, 0, 0, 0, 1},
     {1, 1, 0, 0, 1},
@@ -412,7 +412,7 @@ String direction()
     }
 }
 
-String processor(const String& var)
+String processor(const String &var)
 {
     if (var == "BUTTONS")
     {
@@ -786,12 +786,118 @@ void update_text(String inputString)
     offset = 0;
     clear_canvas();
     char outputString[16];
-    char* pString = outputString;
+    char *pString = outputString;
     inputString.toCharArray(outputString, 16);
     while (*pString)
     {
         write_letter(*pString++);
         offset += 6;
+    }
+}
+
+void strobe(int strobes)
+{
+    for (int cycle = 0; cycle < strobes; cycle++)
+    {
+        for (int row = 0; row < 7; row++)
+        {
+            /* Shift bits*/
+            for (int col = 0; col < 90; col++)
+            {
+                if (canvas[row][col] == 1)
+                {
+                    digitalWrite(D1, HIGH);
+                }
+                else
+                {
+                    digitalWrite(D1, LOW);
+                }
+                digitalWrite(C1, HIGH);
+                digitalWrite(C1, LOW);
+            }
+            /* Strobe Row*/
+            digitalWrite(STR, HIGH);
+            digitalWrite(STR, LOW);
+
+            if (row == 0)
+            {
+                digitalWrite(BCD0, LOW);
+                digitalWrite(BCD1, LOW);
+                digitalWrite(BCD2, LOW);
+            }
+            else if (row == 1)
+            {
+                digitalWrite(BCD0, HIGH);
+                digitalWrite(BCD1, LOW);
+                digitalWrite(BCD2, LOW);
+            }
+            else if (row == 2)
+            {
+                digitalWrite(BCD0, LOW);
+                digitalWrite(BCD1, HIGH);
+                digitalWrite(BCD2, LOW);
+            }
+            else if (row == 3)
+            {
+                digitalWrite(BCD0, HIGH);
+                digitalWrite(BCD1, HIGH);
+                digitalWrite(BCD2, LOW);
+            }
+            else if (row == 4)
+            {
+                digitalWrite(BCD0, LOW);
+                digitalWrite(BCD1, LOW);
+                digitalWrite(BCD2, HIGH);
+            }
+            else if (row == 5)
+            {
+                digitalWrite(BCD0, HIGH);
+                digitalWrite(BCD1, LOW);
+                digitalWrite(BCD2, HIGH);
+            }
+            else if (row == 6)
+            {
+                digitalWrite(BCD0, LOW);
+                digitalWrite(BCD1, HIGH);
+                digitalWrite(BCD2, HIGH);
+            }
+        }
+    }
+}
+
+void move_left()
+{
+    for (int row = 0; row < 7; row++)
+    {
+        for (int col = 0; col < 92; col++)
+        {
+            if (col == 91)
+            {
+                canvas[row][91] = canvas[row][0];
+            }
+            else
+            {
+                canvas[row][col] = canvas[row][col + 1];
+            }
+        }
+    }
+}
+
+void move_right()
+{
+    for (int row = 0; row < 7; row++)
+    {
+        for (int col = 0; col < 92; col++)
+        {
+            if (col == 91)
+            {
+                canvas[row][0] = canvas[row][91];
+            }
+            else
+            {
+                canvas[row][91 - col] = canvas[row][90 - col];
+            }
+        }
     }
 }
 
@@ -814,12 +920,12 @@ void setup()
     Serial.println(WiFi.softAPIP());
 
     /* main page */
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest* request)
-        { request->send_P(200, "text/html", index_html, processor); });
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+              { request->send_P(200, "text/html", index_html, processor); });
 
     /* text update */
-    server.on("/update", HTTP_GET, [](AsyncWebServerRequest* request)
-        {
+    server.on("/update", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
             String inputString;
             if (request->hasParam(PARAM_INPUT_STRING))
             {
@@ -834,8 +940,8 @@ void setup()
             request->send_P(200, "text/html", index_html, processor); });
 
     /* On - Off */
-    server.on("/run", HTTP_GET, [](AsyncWebServerRequest* request)
-        {
+    server.on("/run", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
             String inputPower;
             if (request->hasParam(PARAM_INPUT_PWR))
             {
@@ -855,8 +961,8 @@ void setup()
             }
             request->send(200, "text/plain", "OK"); });
     /* Left - Right */
-    server.on("/mode", HTTP_GET, [](AsyncWebServerRequest* request)
-        {
+    server.on("/mode", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
             String inputMode;
             if (request->hasParam(PARAM_INPUT_MODE))
             {
@@ -883,109 +989,17 @@ void loop()
     while (power)
     {
         digitalWrite(LEDS, HIGH);
-        /* Cycles per image, <6 fast, <8 normal < 10 slow*/
-        for (int cycle = 0; cycle < 8; cycle++)
-        {
-            for (int row = 0; row < 7; row++)
-            {
-                /* Shift bits*/
-                for (int col = 0; col < 90; col++)
-                {
-                    if (canvas[row][col] == 1)
-                    {
-                        digitalWrite(D1, HIGH);
-                    }
-                    else
-                    {
-                        digitalWrite(D1, LOW);
-                    }
-                    digitalWrite(C1, HIGH);
-                    digitalWrite(C1, LOW);
-                }
-                /* Strobe Row*/
-                digitalWrite(STR, HIGH);
-                digitalWrite(STR, LOW);
-
-                if (row == 0)
-                {
-                    digitalWrite(BCD0, LOW);
-                    digitalWrite(BCD1, LOW);
-                    digitalWrite(BCD2, LOW);
-                }
-                else if (row == 1)
-                {
-                    digitalWrite(BCD0, HIGH);
-                    digitalWrite(BCD1, LOW);
-                    digitalWrite(BCD2, LOW);
-                }
-                else if (row == 2)
-                {
-                    digitalWrite(BCD0, LOW);
-                    digitalWrite(BCD1, HIGH);
-                    digitalWrite(BCD2, LOW);
-                }
-                else if (row == 3)
-                {
-                    digitalWrite(BCD0, HIGH);
-                    digitalWrite(BCD1, HIGH);
-                    digitalWrite(BCD2, LOW);
-                }
-                else if (row == 4)
-                {
-                    digitalWrite(BCD0, LOW);
-                    digitalWrite(BCD1, LOW);
-                    digitalWrite(BCD2, HIGH);
-                }
-                else if (row == 5)
-                {
-                    digitalWrite(BCD0, HIGH);
-                    digitalWrite(BCD1, LOW);
-                    digitalWrite(BCD2, HIGH);
-                }
-                else if (row == 6)
-                {
-                    digitalWrite(BCD0, LOW);
-                    digitalWrite(BCD1, HIGH);
-                    digitalWrite(BCD2, HIGH);
-                }
-            }
-        }
-
+        /* strobes per image, 6 fast, 8 normal, 10 slow*/
+        strobe(7);
         /* Rechtslauf >>>>>>> */
         if (!runLeft)
         {
-            for (int row = 0; row < 7; row++)
-            {
-                for (int col = 0; col < 92; col++)
-                {
-                    if (col == 91)
-                    {
-                        canvas[row][0] = canvas[row][91];
-                    }
-                    else
-                    {
-                        canvas[row][91 - col] = canvas[row][90 - col];
-                    }
-                }
-            }
+            move_right();
         }
         /* Linkslauf <<<<<<<  */
         else if (runLeft)
         {
-            for (int row = 0; row < 7; row++)
-            {
-                for (int col = 0; col < 92; col++)
-                {
-                    if (col == 91)
-                    {
-                        canvas[row][91] = canvas[row][0];
-                    }
-                    else
-                    {
-                        canvas[row][col] = canvas[row][col + 1];
-                    }
-                }
-            }
+            move_left();
         }
         yield();
     }
