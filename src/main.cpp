@@ -335,7 +335,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
 <head>
   <title>MovingMessage</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     html {font-family: Arial; display: inline-block; text-align: center; overflow: hidden;}
     h2 {font-size: 3.0rem;}
@@ -353,7 +353,7 @@ const char index_html[] PROGMEM = R"rawliteral(
   <h1>Moving Message</h1>
   %BUTTONS%
   <div><h3>String Ausgabe</h3></div>
-  <input type="text" id="2" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20">
+  <input type="text" id="2" maxlength="15" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20">
  <br> 
 <script>function togglePower(element) {
             var xhr = new XMLHttpRequest();
@@ -406,7 +406,7 @@ String processor(const String &var)
     if (var == "BUTTONS")
     {
         String buttons = "";
-        buttons += "<h2>On/Off</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"togglePower(this)\" id=\"0\" " + power_state() + "><span class=\"slider\"></span></label>";
+        buttons += "<h2>Off/On</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"togglePower(this)\" id=\"0\" " + power_state() + "><span class=\"slider\"></span></label>";
         buttons += "<h2>Rechts/Links</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleMode(this)\" id=\"1\" " + direction() + "><span class=\"slider\"></span></label>";
         return buttons;
     }
