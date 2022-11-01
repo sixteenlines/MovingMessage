@@ -6,7 +6,7 @@
 
 /* Network */
 const char *ssid = "MOVING-MESSAGE";
-const char *pw = "12200000";
+const char *pw = "eisdiele";
 AsyncWebServer server(80);
 
 /* http query parameters*/
@@ -545,6 +545,7 @@ void write_letter(char letter)
                 canvas[posVert][posHoriz + 1 + offset] = c[posVert][posHoriz];
             }
         }
+        offset -= 1;
         break;
     case 'D':
         for (int posHoriz = 0; posHoriz < 5; posHoriz++)
@@ -563,6 +564,7 @@ void write_letter(char letter)
                 canvas[posVert][posHoriz + 1 + offset] = e[posVert][posHoriz];
             }
         }
+        offset -= 1;
         break;
     case 'F':
         for (int posHoriz = 0; posHoriz < 4; posHoriz++)
@@ -572,6 +574,7 @@ void write_letter(char letter)
                 canvas[posVert][posHoriz + 1 + offset] = f[posVert][posHoriz];
             }
         }
+        offset -= 1;
         break;
     case 'G':
         for (int posHoriz = 0; posHoriz < 5; posHoriz++)
