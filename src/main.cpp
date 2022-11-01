@@ -353,24 +353,21 @@ const char index_html[] PROGMEM = R"rawliteral(
   <h1>Moving Message</h1>
   %BUTTONS%
   <div><h3>String Ausgabe</h3></div>
-  <input type="text" id="2" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20">
- <br> 
+  <form action="/update">
+    Ausgabe: <input type="text" name="string" maxlength="15" oninput="this.value = this.value.toUpperCase()">
+    <input type="submit" value="Submit">
+  </form><br> 
 <script>function togglePower(element) {
-            var xhr = new XMLHttpRequest();
-            if(element.checked){ xhr.open("GET", "/run?power=on", true); }
-            else { xhr.open("GET", "/run?power=off", true); }
-            xhr.send();
+        var xhrpower = new XMLHttpRequest();
+        if(element.checked){ xhrpower.open("GET", "/run?power=on", true); }
+        else { xhrpower.open("GET", "/run?power=off", true); }
+        xhrpower.send();
         }
         function toggleMode(element) {
-            var xhr = new XMLHttpRequest();
-            if(element.checked){ xhr.open("GET", "/mode?direction=left", true); }
-            else { xhr.open("GET", "/mode?direction=right", true); }
-            xhr.send();
-        }
-        function updateDisplay(str) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/update?string="+str, true);
-            xhr.send();
+        var xhrmode = new XMLHttpRequest();
+        if(element.checked){ xhrmode.open("GET", "/mode?direction=left", true); }
+        else { xhrmode.open("GET", "/mode?direction=right", true); }
+        xhrmode.send();
         }
 </script>
 </body>
@@ -920,14 +917,13 @@ void setup()
             {
                 inputString = request->getParam(PARAM_INPUT_STRING)->value();
                 update_text(inputString);
-                Serial.println(inputString);
             }
             else
             {
                 inputString = "404";
                 Serial.println("Fehler");
             }
-            request->send_P(200, "text/plain", "OK"); });
+            request->send_P(200, "text/html", index_html, processor); });
 
     /* On - Off */
     server.on("/run", HTTP_GET, [](AsyncWebServerRequest *request)
