@@ -535,7 +535,7 @@ void write_letter(char letter)
         }
         break;
     case 'C':
-        for (int posHoriz = 0; posHoriz < 5; posHoriz++)
+        for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
             for (int posVert = 0; posVert < 7; posVert++)
             {
@@ -553,7 +553,7 @@ void write_letter(char letter)
         }
         break;
     case 'E':
-        for (int posHoriz = 0; posHoriz < 5; posHoriz++)
+        for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
             for (int posVert = 0; posVert < 7; posVert++)
             {
@@ -562,7 +562,7 @@ void write_letter(char letter)
         }
         break;
     case 'F':
-        for (int posHoriz = 0; posHoriz < 5; posHoriz++)
+        for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
             for (int posVert = 0; posVert < 7; posVert++)
             {
