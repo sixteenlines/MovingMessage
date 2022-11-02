@@ -13,12 +13,13 @@ AsyncWebServer server(80);
 const char *PARAM_INPUT_PWR = "power";
 const char *PARAM_INPUT_MODE = "direction";
 const char *PARAM_INPUT_STRING = "string";
+const char *PARAM_INPUT_SPEED = "speed";
 
 /* Message control */
 bool power = true;
-bool runLeft = true;
+bool runLeft = false;
 int offset = 0;
-String input;
+int speed = 8;
 
 /* uC pinout */
 #define D1 D1
@@ -33,6 +34,14 @@ String input;
 bool canvas[7][92] = {};
 
 /* Fonts */
+bool loading[7][1] = {
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1}};
 bool dash[7][4] = {
     {0, 0, 0, 0},
     {0, 0, 0, 0},
@@ -335,7 +344,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
 <head>
   <title>MovingMessage</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7">
   <style>
     html {font-family: Arial; display: inline-block; text-align: center; overflow: hidden;}
     h2 {font-size: 3.0rem;}
@@ -345,6 +354,8 @@ const char index_html[] PROGMEM = R"rawliteral(
     .switch input {display: none}
     .slider {position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #218B96; border-radius: 6px}
     .slider:before {position: absolute; content: ""; height: 52px; width: 52px; left: 8px; bottom: 8px; background-color: #000; -webkit-transition: .4s; transition: .4s; border-radius: 3px}
+    .slider2 {direction: rtl}
+    input[type=range]::-webkit-slider-runnable-track  {-webkit-appearance: none; box-shadow: none; border: 2px solid black; border-radius: 5px; background: #38ECFF}
     input:checked+.slider {background-color: #38ECFF}
     input:checked+.slider:before {-webkit-transform: translateX(52px); -ms-transform: translateX(52px); transform: translateX(52px)}
   </style>
@@ -352,7 +363,9 @@ const char index_html[] PROGMEM = R"rawliteral(
 <body>
   <h1>Moving Message</h1>
   %BUTTONS%
-  <div><h3>String Ausgabe</h3></div>
+  <div><h2>Speed Setting</h2></div>
+  <input type="range" onchange="updateSpeed(this)" id="3" min="5" max="10" value="%SLIDERVALUE%" step="1" class="slider2">
+  <div><h2>String Ausgabe</h2></div>
   <input type="text" id="2" maxlength="15" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20">
  <br> 
 <script>function togglePower(element) {
@@ -372,6 +385,12 @@ const char index_html[] PROGMEM = R"rawliteral(
             xhr.open("GET", "/update?string="+str, true);
             xhr.send();
         }
+        function updateSpeed(element) {
+            var sliderValue = document.getElementById("3").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/slider?speed="+sliderValue, true);
+  xhr.send();
+}
 </script>
 </body>
 </html>
@@ -410,6 +429,10 @@ String processor(const String &var)
         buttons += "<h2>Rechts/Links</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleMode(this)\" id=\"1\" " + direction() + "><span class=\"slider\"></span></label>";
         return buttons;
     }
+    if (var == "SLIDERVALUE")
+    {
+        return String(speed);
+    }
     return String();
 }
 
@@ -417,6 +440,12 @@ void write_letter(char letter)
 {
     switch (letter)
     {
+    case '#':
+        for (int posVert = 0; posVert < 7; posVert++)
+        {
+            canvas[posVert][offset] = loading[posVert][0];
+        }
+        break;
     case '-':
         for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
@@ -893,6 +922,20 @@ void move_right()
     }
 }
 
+void startup()
+{
+    offset = 0;
+    digitalWrite(LEDS, HIGH);
+    for (int posHoriz = 0; posHoriz < 92; posHoriz++)
+    {
+        write_letter('#');
+        strobe(5);
+        offset++;
+    }
+    clear_canvas();
+    update_text("DEMO");
+}
+
 void setup()
 {
     /* Config pins as output */
@@ -903,6 +946,13 @@ void setup()
     pinMode(BCD0, OUTPUT);
     pinMode(BCD1, OUTPUT);
     pinMode(BCD2, OUTPUT);
+    digitalWrite(D1, LOW);
+    digitalWrite(C1, LOW);
+    digitalWrite(STR, LOW);
+    digitalWrite(BCD0, LOW);
+    digitalWrite(BCD1, LOW);
+    digitalWrite(BCD2, LOW);
+    digitalWrite(LEDS, LOW);
     /* Open Serial Port for debugging */
     Serial.begin(115200);
     /* Setup Soft-AP */
@@ -974,7 +1024,23 @@ void setup()
                 inputMode = "No message sent";
             }
             request->send(200, "text/plain", "OK"); });
+    /* speed update */
+    server.on("/slider", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+            String inputSpeed;
+            if (request->hasParam(PARAM_INPUT_SPEED))
+            {
+                inputSpeed = request->getParam(PARAM_INPUT_SPEED)->value();
+                speed = inputSpeed.toInt();
+            }
+            else
+            {
+                inputSpeed = "404";
+                Serial.println("Fehler");
+            }
+            request->send_P(200, "text/plain", "OK"); });
     server.begin();
+    startup();
 }
 
 void loop()
@@ -983,7 +1049,7 @@ void loop()
     {
         digitalWrite(LEDS, HIGH);
         /* strobes per image, 6 fast, 8 normal, 10 slow*/
-        strobe(7);
+        strobe(speed);
         /* Rechtslauf >>>>>>> */
         if (!runLeft)
         {
