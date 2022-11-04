@@ -925,6 +925,7 @@ void move_right()
 void startup()
 {
     offset = 0;
+    strobe(1);
     digitalWrite(LEDS, HIGH);
     for (int posHoriz = 0; posHoriz < 92; posHoriz++)
     {
@@ -946,13 +947,6 @@ void setup()
     pinMode(BCD0, OUTPUT);
     pinMode(BCD1, OUTPUT);
     pinMode(BCD2, OUTPUT);
-    digitalWrite(D1, LOW);
-    digitalWrite(C1, LOW);
-    digitalWrite(STR, LOW);
-    digitalWrite(BCD0, LOW);
-    digitalWrite(BCD1, LOW);
-    digitalWrite(BCD2, LOW);
-    digitalWrite(LEDS, LOW);
     /* Open Serial Port for debugging */
     Serial.begin(115200);
     /* Setup Soft-AP */
