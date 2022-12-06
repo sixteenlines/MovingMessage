@@ -14,10 +14,12 @@ const char *PARAM_INPUT_PWR = "power";
 const char *PARAM_INPUT_MODE = "direction";
 const char *PARAM_INPUT_STRING = "string";
 const char *PARAM_INPUT_SPEED = "speed";
+const char *PARAM_INPUT_SLOWMODE = "slowmode";
 
 /* Message control */
 bool power = true;
 bool runLeft = false;
+bool slowmode = false;
 int offset = 0;
 int speed = 8;
 
@@ -131,7 +133,7 @@ bool zero[7][4] = {
     {1, 0, 0, 1},
     {1, 1, 1, 1}};
 bool a[7][5] = {
-    {1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 1, 1, 1, 1},
@@ -344,12 +346,12 @@ const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
 <head>
   <title>MovingMessage</title>
-  <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html {font-family: Arial; display: inline-block; text-align: center; overflow: hidden;}
+    html {font-family: Arial; display: inline-block; text-align: center;}
     h2 {font-size: 3.0rem;}
     p {font-size: 3.0rem;}
-    body {max-width: 600px; margin: auto; overflow: hidden; padding-bottom: 25px;}
+    body {margin: auto; padding-bottom: 25px;}
     .switch {position: relative; display: inline-block; width: 120px; height: 68px} 
     .switch input {display: none}
     .slider {position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #218B96; border-radius: 6px}
@@ -362,11 +364,10 @@ const char index_html[] PROGMEM = R"rawliteral(
 </head>
 <body>
   <h1>Moving Message</h1>
+  <input type="text" id="0" maxlength="15" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20" style="height:90px;font-size:28pt;text-align:center;">
   %BUTTONS%
-  <div><h2>Speed Setting</h2></div>
-  <input type="range" onchange="updateSpeed(this)" id="3" min="5" max="10" value="%SLIDERVALUE%" step="1" class="slider2">
-  <div><h2>String Ausgabe</h2></div>
-  <input type="text" id="2" maxlength="15" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20">
+  <div><h3>Laufgeschwindigkeit</h3></div>
+  <input type="range" onchange="updateSpeed(this)" id="4" min="1" max="16" value="%SLIDERVALUE%" step="1" class="slider2">
  <br> 
 <script>function togglePower(element) {
             var xhr = new XMLHttpRequest();
@@ -380,17 +381,23 @@ const char index_html[] PROGMEM = R"rawliteral(
             else { xhr.open("GET", "/mode?direction=right", true); }
             xhr.send();
         }
+        function toggleDemo(element) {
+            var xhr = new XMLHttpRequest();
+            if(element.checked){ xhr.open("GET", "/demo?slowmode=on", true); }
+            else { xhr.open("GET", "/demo?slowmode=off", true); }
+            xhr.send();
+        }
         function updateDisplay(str) {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/update?string="+str, true);
             xhr.send();
         }
         function updateSpeed(element) {
-            var sliderValue = document.getElementById("3").value;
+            var sliderValue = document.getElementById("4").value;
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/slider?speed="+sliderValue, true);
-  xhr.send();
-}
+            xhr.send();
+        }
 </script>
 </body>
 </html>
@@ -420,13 +427,26 @@ String direction()
     }
 }
 
+String demo_speed()
+{
+    if (slowmode)
+    {
+        return "checked";
+    }
+    else
+    {
+        return "";
+    }
+}
+
 String processor(const String &var)
 {
     if (var == "BUTTONS")
     {
         String buttons = "";
-        buttons += "<h2>Off/On</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"togglePower(this)\" id=\"0\" " + power_state() + "><span class=\"slider\"></span></label>";
-        buttons += "<h2>Rechts/Links</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleMode(this)\" id=\"1\" " + direction() + "><span class=\"slider\"></span></label>";
+        buttons += "<h3>Aus/An</h3><label class=\"switch\"><input type=\"checkbox\" onchange=\"togglePower(this)\" id=\"1\" " + power_state() + "><span class=\"slider\"></span></label>";
+        buttons += "<h3>Rechts/Links</h3><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleMode(this)\" id=\"2\" " + direction() + "><span class=\"slider\"></span></label>";
+        buttons += "<h3>Demo Modus</h3><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleDemo(this)\" id=\"3\" " + demo_speed() + "><span class=\"slider\"></span></label>";
         return buttons;
     }
     if (var == "SLIDERVALUE")
@@ -882,6 +902,10 @@ void strobe(int strobes)
                 digitalWrite(BCD1, HIGH);
                 digitalWrite(BCD2, HIGH);
             }
+            if (slowmode)
+            {
+                delay(28);
+            }
         }
     }
 }
@@ -934,7 +958,7 @@ void startup()
         offset++;
     }
     clear_canvas();
-    update_text("DEMO");
+    update_text("KNOW-IT");
 }
 
 void setup()
@@ -1016,6 +1040,26 @@ void setup()
             else
             {
                 inputMode = "No message sent";
+            }
+            request->send(200, "text/plain", "OK"); });
+    server.on("/demo", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+            String inputSlowmode;
+            if (request->hasParam(PARAM_INPUT_SLOWMODE))
+            {
+                inputSlowmode = request->getParam(PARAM_INPUT_SLOWMODE)->value();
+                if (inputSlowmode == "on")
+                {
+                    slowmode = true;
+                }
+                else if (inputSlowmode == "off")
+                {
+                    slowmode = false;
+                }
+            }
+            else
+            {
+                inputSlowmode = "No message sent";
             }
             request->send(200, "text/plain", "OK"); });
     /* speed update */
