@@ -9,6 +9,14 @@
       font-family: Arial, sans-serif;
     }
 
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
     button {
       background-color: white;
       color: black;
@@ -18,15 +26,24 @@
       margin: 10px;
       cursor: pointer;
     }
+
+    @media (max-width: 480px) {
+      button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
   </style>
 </head>
 <body>
-  <button onclick="sendRequest('vorwaerts')">Vorwärts</button>
-  <button onclick="sendRequest('rueckwaerts')">Rückwärts</button>
-  <button onclick="sendRequest('links')">Links</button>
-  <button onclick="sendRequest('rechts')">Rechts</button>
-  <button onclick="sendRequest('an')">An</button>
-  <button onclick="sendRequest('aus')">Aus</button>
+  <div class="container">
+    <button onclick="sendRequest('vorwaerts')">Vorwärts</button>
+    <button onclick="sendRequest('rueckwaerts')">Rückwärts</button>
+    <button onclick="sendRequest('links')">Links</button>
+    <button onclick="sendRequest('rechts')">Rechts</button>
+    <button onclick="sendRequest('an')">An</button>
+    <button onclick="sendRequest('aus')">Aus</button>
+  </div>
 
   <script>
     function sendRequest(endpoint) {
