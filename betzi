@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Black and White Website</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    button {
+      background-color: white;
+      color: black;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="sendRequest('vorwaerts')">Vorwärts</button>
+  <button onclick="sendRequest('rueckwaerts')">Rückwärts</button>
+  <button onclick="sendRequest('links')">Links</button>
+  <button onclick="sendRequest('rechts')">Rechts</button>
+  <button onclick="sendRequest('an')">An</button>
+  <button onclick="sendRequest('aus')">Aus</button>
+
+  <script>
+    function sendRequest(endpoint) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/' + endpoint, true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          // Request successful, do something with the response if needed
+          console.log('Request sent successfully');
+        }
+      };
+      xhr.send();
+    }
+  </script>
+</body>
+</html>
