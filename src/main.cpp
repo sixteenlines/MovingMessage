@@ -958,7 +958,7 @@ void startup()
         offset++;
     }
     clear_canvas();
-    update_text("KNOW-IT");
+    update_text("BBRAUN");
 }
 
 void setup()
