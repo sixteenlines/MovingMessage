@@ -13,12 +13,15 @@ AsyncWebServer server(80);
 const char *PARAM_INPUT_PWR = "power";
 const char *PARAM_INPUT_MODE = "direction";
 const char *PARAM_INPUT_STRING = "string";
+const char *PARAM_INPUT_SPEED = "speed";
+const char *PARAM_INPUT_SLOWMODE = "slowmode";
 
 /* Message control */
 bool power = true;
-bool runLeft = true;
+bool runLeft = false;
+bool slowmode = false;
 int offset = 0;
-String input;
+int speed = 8;
 
 /* uC pinout */
 #define D1 D1
@@ -33,6 +36,14 @@ String input;
 bool canvas[7][92] = {};
 
 /* Fonts */
+bool loading[7][1] = {
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1}};
 bool dash[7][4] = {
     {0, 0, 0, 0},
     {0, 0, 0, 0},
@@ -122,7 +133,7 @@ bool zero[7][4] = {
     {1, 0, 0, 1},
     {1, 1, 1, 1}};
 bool a[7][5] = {
-    {1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 0},
     {1, 0, 0, 0, 1},
     {1, 0, 0, 0, 1},
     {1, 1, 1, 1, 1},
@@ -335,25 +346,28 @@ const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
 <head>
   <title>MovingMessage</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html {font-family: Arial; display: inline-block; text-align: center; overflow: hidden;}
+    html {font-family: Arial; display: inline-block; text-align: center;}
     h2 {font-size: 3.0rem;}
     p {font-size: 3.0rem;}
-    body {max-width: 600px; margin: auto; overflow: hidden; padding-bottom: 25px;}
+    body {margin: auto; padding-bottom: 25px;}
     .switch {position: relative; display: inline-block; width: 120px; height: 68px} 
     .switch input {display: none}
     .slider {position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #218B96; border-radius: 6px}
     .slider:before {position: absolute; content: ""; height: 52px; width: 52px; left: 8px; bottom: 8px; background-color: #000; -webkit-transition: .4s; transition: .4s; border-radius: 3px}
+    .slider2 {direction: rtl}
+    input[type=range]::-webkit-slider-runnable-track  {-webkit-appearance: none; box-shadow: none; border: 2px solid black; border-radius: 5px; background: #38ECFF}
     input:checked+.slider {background-color: #38ECFF}
     input:checked+.slider:before {-webkit-transform: translateX(52px); -ms-transform: translateX(52px); transform: translateX(52px)}
   </style>
 </head>
 <body>
   <h1>Moving Message</h1>
+  <input type="text" id="0" maxlength="15" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20" style="height:90px;font-size:28pt;text-align:center;">
   %BUTTONS%
-  <div><h3>String Ausgabe</h3></div>
-  <input type="text" id="2" maxlength="15" oninput="this.value = this.value.toUpperCase()" onkeyup="updateDisplay(this.value)" size="20">
+  <div><h3>Laufgeschwindigkeit</h3></div>
+  <input type="range" onchange="updateSpeed(this)" id="4" min="1" max="16" value="%SLIDERVALUE%" step="1" class="slider2">
  <br> 
 <script>function togglePower(element) {
             var xhr = new XMLHttpRequest();
@@ -367,9 +381,21 @@ const char index_html[] PROGMEM = R"rawliteral(
             else { xhr.open("GET", "/mode?direction=right", true); }
             xhr.send();
         }
+        function toggleDemo(element) {
+            var xhr = new XMLHttpRequest();
+            if(element.checked){ xhr.open("GET", "/demo?slowmode=on", true); }
+            else { xhr.open("GET", "/demo?slowmode=off", true); }
+            xhr.send();
+        }
         function updateDisplay(str) {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/update?string="+str, true);
+            xhr.send();
+        }
+        function updateSpeed(element) {
+            var sliderValue = document.getElementById("4").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/slider?speed="+sliderValue, true);
             xhr.send();
         }
 </script>
@@ -401,14 +427,31 @@ String direction()
     }
 }
 
+String demo_speed()
+{
+    if (slowmode)
+    {
+        return "checked";
+    }
+    else
+    {
+        return "";
+    }
+}
+
 String processor(const String &var)
 {
     if (var == "BUTTONS")
     {
         String buttons = "";
-        buttons += "<h2>Off/On</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"togglePower(this)\" id=\"0\" " + power_state() + "><span class=\"slider\"></span></label>";
-        buttons += "<h2>Rechts/Links</h2><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleMode(this)\" id=\"1\" " + direction() + "><span class=\"slider\"></span></label>";
+        buttons += "<h3>Aus/An</h3><label class=\"switch\"><input type=\"checkbox\" onchange=\"togglePower(this)\" id=\"1\" " + power_state() + "><span class=\"slider\"></span></label>";
+        buttons += "<h3>Rechts/Links</h3><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleMode(this)\" id=\"2\" " + direction() + "><span class=\"slider\"></span></label>";
+        buttons += "<h3>Demo Modus</h3><label class=\"switch\"><input type=\"checkbox\" onchange=\"toggleDemo(this)\" id=\"3\" " + demo_speed() + "><span class=\"slider\"></span></label>";
         return buttons;
+    }
+    if (var == "SLIDERVALUE")
+    {
+        return String(speed);
     }
     return String();
 }
@@ -417,6 +460,12 @@ void write_letter(char letter)
 {
     switch (letter)
     {
+    case '#':
+        for (int posVert = 0; posVert < 7; posVert++)
+        {
+            canvas[posVert][offset] = loading[posVert][0];
+        }
+        break;
     case '-':
         for (int posHoriz = 0; posHoriz < 4; posHoriz++)
         {
@@ -853,6 +902,10 @@ void strobe(int strobes)
                 digitalWrite(BCD1, HIGH);
                 digitalWrite(BCD2, HIGH);
             }
+            if (slowmode)
+            {
+                delay(28);
+            }
         }
     }
 }
@@ -891,6 +944,21 @@ void move_right()
             }
         }
     }
+}
+
+void startup()
+{
+    offset = 0;
+    strobe(1);
+    digitalWrite(LEDS, HIGH);
+    for (int posHoriz = 0; posHoriz < 92; posHoriz++)
+    {
+        write_letter('#');
+        strobe(5);
+        offset++;
+    }
+    clear_canvas();
+    update_text("KNOW-IT");
 }
 
 void setup()
@@ -974,7 +1042,43 @@ void setup()
                 inputMode = "No message sent";
             }
             request->send(200, "text/plain", "OK"); });
+    server.on("/demo", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+            String inputSlowmode;
+            if (request->hasParam(PARAM_INPUT_SLOWMODE))
+            {
+                inputSlowmode = request->getParam(PARAM_INPUT_SLOWMODE)->value();
+                if (inputSlowmode == "on")
+                {
+                    slowmode = true;
+                }
+                else if (inputSlowmode == "off")
+                {
+                    slowmode = false;
+                }
+            }
+            else
+            {
+                inputSlowmode = "No message sent";
+            }
+            request->send(200, "text/plain", "OK"); });
+    /* speed update */
+    server.on("/slider", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
+            String inputSpeed;
+            if (request->hasParam(PARAM_INPUT_SPEED))
+            {
+                inputSpeed = request->getParam(PARAM_INPUT_SPEED)->value();
+                speed = inputSpeed.toInt();
+            }
+            else
+            {
+                inputSpeed = "404";
+                Serial.println("Fehler");
+            }
+            request->send_P(200, "text/plain", "OK"); });
     server.begin();
+    startup();
 }
 
 void loop()
@@ -983,7 +1087,7 @@ void loop()
     {
         digitalWrite(LEDS, HIGH);
         /* strobes per image, 6 fast, 8 normal, 10 slow*/
-        strobe(7);
+        strobe(speed);
         /* Rechtslauf >>>>>>> */
         if (!runLeft)
         {
